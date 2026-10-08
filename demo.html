@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Listings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#f4f1ea;
+    color:#24211c
+}
+
+.layout{
+    display:flex;
+    min-height:100vh
+}
+
+.sidebar{
+    width:240px;
+    background:#24221f;
+    border-right:1px solid #3a352d;
+    padding:24px 16px;
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    color:#f4f1ea
+}
+
+.logo{
+    font-family:'Instrument Serif',serif;
+    font-size:22px;
+    display:flex;
+    gap:8px;
+    align-items:center
+}
+
+.logo i{
+    width:28px;
+    height:28px;
+    background:#c7a45b;
+    color:#24221f;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-style:normal;
+    font-size:14px
+}
+
+.menu-label{
+    font-size:9px;
+    letter-spacing:1px;
+    color:#b9a984;
+    margin:30px 0 10px
+}
+
+.menu{
+    background:#37332d;
+    color:#e3c77d;
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+    border-top:1px solid #3a352d;
+    padding-top:16px
+}
+
+.small{
+    font-size:9px;
+    letter-spacing:1.2px;
+    color:#9d927d;
+    text-transform:uppercase
+}
+
+.main{
+    flex:1;
+    padding:0 32px 40px
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    padding:18px 0;
+    border-bottom:1px solid #ded7c8;
+    font-size:12px;
+    color:#857b6a
+}
+
+.head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    padding:22px 0 16px
+}
+
+.h1{
+    font-family:'Instrument Serif',serif;
+    font-size:44px;
+    font-weight:400;
+    color:#24211c
+}
+
+.sub{
+    font-size:13px;
+    color:#857b6a;
+    margin-top:4px
+}
+
+.btn-black{
+    background:#292722;
+    color:#e5c979;
+    border:1px solid #b8954f;
+    padding:11px 20px;
+    border-radius:999px;
+    font-size:13px;
+    cursor:pointer
+}
+
+.btn-black:hover{
+    background:#b8954f;
+    color:#fff
+}
+
+.stats{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    margin:12px 0 18px
+}
+
+.stat-num{
+    font-family:'Instrument Serif',serif;
+    font-size:28px;
+    color:#a47d32
+}
+
+.filters{
+    background:#fffdf9;
+    border:1px solid #ded7c8;
+    padding:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    border-radius:6px
+}
+
+.filters input{
+    border:1px solid #ded7c8;
+    padding:9px 12px;
+    font-size:12px;
+    border-radius:4px;
+    background:#fdfbf7;
+    width:150px;
+    outline:none
+}
+
+.filters input:focus{
+    border-color:#b8954f
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:18px
+}
+
+.card{
+    background:#fffdf9;
+    border:1px solid #ded7c8
+}
+
+.card:hover{
+    border-color:#b8954f
+}
+
+.card img{
+    width:100%;
+    height:230px;
+    object-fit:cover
+}
+
+.card-body{
+    padding:16px
+}
+
+.card-title{
+    font-family:'Instrument Serif',serif;
+    font-size:20px;
+    color:#292722
+}
+
+.price{
+    float:right;
+    font-family:'Instrument Serif',serif;
+    font-size:20px;
+    text-align:right;
+    color:#a47d32
+}
+
+.price small{
+    font-family:'Inter';
+    font-size:10px;
+    color:#857b6a;
+    display:block
+}
+
+.desc{
+    font-size:11px;
+    color:#857b6a;
+    margin-top:6px;
+    line-height:15px;
+    min-height:30px
+}
+
+.foot{
+    margin-top:14px;
+    border-top:1px solid #eee8dc;
+    padding-top:10px;
+    display:flex;
+    justify-content:space-between;
+    font-size:11px
+}
+
+.foot span{
+    cursor:pointer
+}
+
+.foot span:hover{
+    color:#a47d32
+}
+
+.modal-bg{
+    position:fixed;
+    inset:0;
+    background:rgba(20,18,15,.65);
+    backdrop-filter:blur(4px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:99
+}
+
+.modal-bg.active{
+    display:flex
+}
+
+.modal{
+    background:#fffdf9;
+    width:620px;
+    max-width:94vw;
+    padding:28px;
+    border-radius:8px;
+    border:1px solid #d5c39d
+}
+
+.upload{
+    border:1px dashed #b8954f;
+    background:#faf7ef;
+    padding:28px;
+    text-align:center;
+    border-radius:8px;
+    margin:18px 0;
+    cursor:pointer
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:12px
+}
+
+.row label,
+.full label{
+    font-size:10px;
+    color:#857b6a;
+    text-transform:uppercase;
+    letter-spacing:.5px
+}
+
+.row input,
+.full input,
+.full textarea{
+    width:100%;
+    border:1px solid #ded7c8;
+    padding:10px;
+    border-radius:6px;
+    margin-top:4px;
+    background:#fdfbf7;
+    font-size:13px
+}
+
+.row input:focus,
+.full input:focus,
+.full textarea:focus{
+    outline:none;
+    border-color:#b8954f
+}
+
+.full textarea{
+    height:70px
+}
+
+.actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:16px
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<div class="sidebar">
+
+<div class="logo">
+    <i>⌂</i> Haven Inn
+</div>
+
+<div class="menu-label">Workspace</div>
+
+<div class="menu">
+    Hotels <span>•</span>
+</div>
+
+<div class="sidebar-bottom">
+
+<div class="small" style="font-weight:600;color:#c7a45b">
+    Property Desk
+</div>
+
+<div style="font-family:'Instrument Serif',serif;font-size:20px;margin:6px 0">
+    Curate every stay.
+</div>
+
+<small style="font-size:11px;color:#a9a092">
+    A focused workspace for your independent hotel collection.
+</small>
+
+<br><br>
+
+<small style="font-size:10px;color:#c7a45b">
+    ● All systems operational
+</small>
+
+</div>
+</div>
+
+
+<div class="main">
+
+<div class="topbar">
+    <span>Workspace &gt; Hotels</span>
+    <span>● Last synced just now</span>
+</div>
+
+
+<div class="head">
+
+<div>
+
+<div class="small">
+    Property Collection
+</div>
+
+<div class="h1">
+    Hotel Listings
+</div>
+
+<div class="sub">
+    Manage and curate the places your guests will remember.
+</div>
+
+</div>
+
+<button class="btn-black" onclick="openModal()">
+    + Add New Hotel
+</button>
+
+</div>
+
+
+<div class="stats">
+
+<div>
+
+<div class="small">
+    Total Properties
+</div>
+
+<div class="stat-num" id="total">
+    06
+</div>
+
+</div>
+
+<div style="border-left:1px solid #ded7c8;padding-left:20px;font-size:12px;color:#857b6a">
+    ● Collection is live
+</div>
+
+</div>
+
+
+<div class="filters">
+
+<input
+    id="search"
+    placeholder="⌕ Search hotels"
+    oninput="renderHotels()"
+>
+
+<input
+    id="min"
+    type="number"
+    placeholder="$ Min price"
+    oninput="renderHotels()"
+>
+
+<input
+    id="max"
+    type="number"
+    placeholder="$ Max price"
+    oninput="renderHotels()"
+>
+
+<span
+    style="font-size:11px;color:#857b6a;cursor:pointer"
+    onclick="clearFilter()"
+>
+    ≣ Clear filters
+</span>
+
+<div style="margin-left:auto;display:flex;gap:8px">
+
+<button
+    class="btn-black"
+    style="background:#f0ece3;color:#292722;border:1px solid #d8c8a6"
+    onclick="openModal()"
+>
+    + Add hotel
+</button>
+
+<button
+    style="background:#fffdf9;border:1px solid #ded7c8;padding:7px 12px;border-radius:6px;font-size:11px"
+    onclick="exportCSV()"
+>
+    Export CSV
+</button>
+
+</div>
+</div>
+
+
+<div class="grid" id="grid"></div>
+
+
+<div style="display:flex;justify-content:space-between;margin-top:20px;font-size:11px;color:#857b6a">
+
+<span id="showing">
+    Showing 1-4 of 6 properties
+</span>
+
+<div style="display:flex;gap:6px">
+
+<span
+    onclick="prev()"
+    style="width:28px;height:28px;border:1px solid #ded7c8;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fffdf9"
+>
+    &lt;
+</span>
+
+<span
+    id="p1"
+    style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#292722;color:#e5c979"
+>
+    1
+</span>
+
+<span
+    id="p2"
+    style="width:28px;height:28px;border:1px solid #ded7c8;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fffdf9"
+>
+    2
+</span>
+
+<span
+    onclick="next()"
+    style="width:28px;height:28px;border:1px solid #ded7c8;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fffdf9"
+>
+    &gt;
+</span>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- ADD HOTEL MODAL -->
+
+<div class="modal-bg" id="modal">
+
+<div class="modal">
+
+<div style="display:flex;justify-content:space-between">
+
+<div>
+
+<div class="small">
+    New Property
+</div>
+
+<div
+    style="font-family:'Instrument Serif',serif;font-size:28px"
+    id="mTitle"
+>
+    Add a new hotel
+</div>
+
+</div>
+
+<span onclick="closeModal()" style="cursor:pointer">
+    ✕
+</span>
+
+</div>
+
+
+<div
+    class="upload"
+    onclick="document.getElementById('file').click()"
+>
+
+<input
+    type="file"
+    id="file"
+    hidden
+    accept="image/*"
+    onchange="onFile(event)"
+>
+
+<img
+    id="prev"
+    style="display:none;width:100%;height:140px;object-fit:cover;border-radius:6px"
+>
+
+<div id="upText">
+
+<div>🖼️</div>
+
+<b style="font-size:12px">
+    Upload cover image
+</b>
+
+<br>
+
+<small style="font-size:10px;color:#857b6a">
+    PNG, JPG or WEBP up to 10MB
+</small>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>Hotel title</label>
+
+<input
+    id="fTitle"
+    placeholder="e.g. The Rowan House"
+>
+
+</div>
+
+<div>
+
+<label>Nightly price</label>
+
+<input
+    id="fPrice"
+    type="number"
+    placeholder="$ 0"
+>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>Latitude</label>
+
+<input
+    id="fLat"
+    placeholder="e.g. 51.5074"
+>
+
+</div>
+
+<div>
+
+<label>Longitude</label>
+
+<input
+    id="fLng"
+    placeholder="e.g. -0.1278"
+>
+
+</div>
+
+</div>
+
+
+<div class="full">
+
+<label>Description</label>
+
+<textarea
+    id="fDesc"
+    placeholder="Describe what makes this stay special"
+></textarea>
+
+</div>
+
+
+<div class="actions">
+
+<button
+    style="background:#fffdf9;border:1px solid #ded7c8;padding:10px 18px;border-radius:999px"
+    onclick="closeModal()"
+>
+    Cancel
+</button>
+
+<button
+    class="btn-black"
+    id="fBtn"
+    onclick="save()"
+>
+    Add hotel →
+</button>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+let hotels=[
+
+{
+id:1,
+title:"Aurelia Grand House",
+price:285,
+desc:"A quietly luxurious city retreat with warm interiors and a celebrated kitchen.",
+img:"https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=900&q=80",
+lat:51.5074,
+lng:-0.1278
+},
+
+{
+id:2,
+title:"Velora Luxury Stay",
+price:340,
+desc:"Modern alpine hospitality framed by pines, firelight and slow mornings.",
+img:"https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=900&q=80",
+lat:46.8182,
+lng:8.2275
+},
+
+{
+id:3,
+title:"The Solene Heritage",
+price:420,
+desc:"An intimate glasshouse stay where art, architecture and nature meet.",
+img:"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80",
+lat:48.8566,
+lng:2.3522
+},
+
+{
+id:4,
+title:"Arden Royale Retreat",
+price:210,
+desc:"A sun-washed coastal hideaway with a distinctly local point of view.",
+img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80",
+lat:40.4168,
+lng:-3.7038
+},
+
+{
+id:5,
+title:"Lunara Grand Resort",
+price:180,
+desc:"Heritage walls, crisp linens and a slow breakfast.",
+img:"https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=80",
+lat:51.5,
+lng:-0.1
+},
+
+{
+id:6,
+title:"Elara Cove Boutique Hotel",
+price:390,
+desc:"Forest bathing, cedar tubs and dinners that turn into stories.",
+img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+lat:45,
+lng:7
+}
+
+];
+
+
+let editId=null,
+imgTemp="",
+page=0,
+limit=4;
+
+
+function renderHotels(){
+
+let q=document.getElementById('search').value.toLowerCase();
+
+let min=parseFloat(document.getElementById('min').value)||0;
+
+let max=parseFloat(document.getElementById('max').value)||999999;
+
+let filtered=hotels.filter(h=>
+h.title.toLowerCase().includes(q)&&
+h.price>=min&&
+h.price<=max
+);
+
+document.getElementById('total').textContent=
+String(filtered.length).padStart(2,'0');
+
+let start=page*limit;
+
+let paged=filtered.slice(start,start+limit);
+
+document.getElementById('grid').innerHTML=
+paged.map(h=>`
+
+<div class="card">
+
+<img src="${h.img}">
+
+<div class="card-body">
+
+<div class="price">
+$${h.price}
+<small>/ night</small>
+</div>
+
+<div class="card-title">
+${h.title}
+</div>
+
+<div class="desc">
+${h.desc}
+</div>
+
+<div class="foot">
+
+<span onclick="openMap(${h.lat},${h.lng})">
+View details →
+</span>
+
+<span>
+<span onclick="edit(${h.id})">✎</span>
+&nbsp;
+<span onclick="del(${h.id})">🗑</span>
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+`).join('');
+
+document.getElementById('showing').textContent=
+`Showing ${filtered.length===0?0:start+1}-${Math.min(start+limit,filtered.length)} of ${filtered.length} properties`;
+
+document.getElementById('p1').style.background=
+page==0?'#292722':'#fffdf9';
+
+document.getElementById('p1').style.color=
+page==0?'#e5c979':'#292722';
+
+document.getElementById('p2').style.background=
+page==1?'#292722':'#fffdf9';
+
+document.getElementById('p2').style.color=
+page==1?'#e5c979':'#292722';
+
+}
+
+
+function openModal(){
+document.getElementById('modal').classList.add('active');
+}
+
+
+function closeModal(){
+
+document.getElementById('modal').classList.remove('active');
+
+editId=null;
+
+clearForm();
+
+}
+
+
+function clearForm(){
+
+['fTitle','fPrice','fLat','fLng','fDesc']
+.forEach(i=>
+document.getElementById(i).value=''
+);
+
+document.getElementById('prev').style.display='none';
+
+document.getElementById('upText').style.display='block';
+
+imgTemp='';
+
+document.getElementById('mTitle').textContent=
+'Add a new hotel';
+
+document.getElementById('fBtn').textContent=
+'Add hotel →';
+
+}
+
+
+function onFile(e){
+
+let f=e.target.files[0];
+
+if(!f)return;
+
+imgTemp=URL.createObjectURL(f);
+
+document.getElementById('prev').src=imgTemp;
+
+document.getElementById('prev').style.display='block';
+
+document.getElementById('upText').style.display='none';
+
+}
+
+
+function save(){
+
+let title=
+document.getElementById('fTitle').value.trim();
+
+let price=
+parseFloat(document.getElementById('fPrice').value);
+
+if(!title||!price||price<=0){
+
+alert('Title & Price required da!');
+
+return;
+
+}
+
+let obj={
+
+id:editId||Date.now(),
+
+title,
+
+price,
+
+desc:
+document.getElementById('fDesc').value||
+'A special boutique stay',
+
+img:
+imgTemp||
+'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80',
+
+lat:
+parseFloat(document.getElementById('fLat').value)||0,
+
+lng:
+parseFloat(document.getElementById('fLng').value)||0
+
+};
+
+if(editId)
+
+hotels=hotels.map(h=>
+h.id==editId?obj:h
+);
+
+else
+
+hotels.unshift(obj);
+
+closeModal();
+
+page=0;
+
+renderHotels();
+
+}
+
+
+function edit(id){
+
+let h=hotels.find(x=>x.id==id);
+
+editId=id;
+
+document.getElementById('fTitle').value=h.title;
+
+document.getElementById('fPrice').value=h.price;
+
+document.getElementById('fLat').value=h.lat;
+
+document.getElementById('fLng').value=h.lng;
+
+document.getElementById('fDesc').value=h.desc;
+
+imgTemp=h.img;
+
+document.getElementById('prev').src=h.img;
+
+document.getElementById('prev').style.display='block';
+
+document.getElementById('upText').style.display='none';
+
+document.getElementById('mTitle').textContent=
+'Edit hotel';
+
+document.getElementById('fBtn').textContent=
+'Update hotel →';
+
+openModal();
+
+}
+
+
+function del(id){
+
+if(confirm('Are you sure? Delete pananuma?')){
+
+hotels=hotels.filter(h=>h.id!=id);
+
+renderHotels();
+
+}
+
+}
+
+
+function openMap(lat,lng){
+
+window.open(
+`https://www.google.com/maps?q=${lat},${lng}`
+);
+
+}
+
+
+function clearFilter(){
+
+document.getElementById('search').value='';
+
+document.getElementById('min').value='';
+
+document.getElementById('max').value='';
+
+page=0;
+
+renderHotels();
+
+}
+
+
+function next(){
+
+if((page+1)*limit<hotels.length){
+
+page++;
+
+renderHotels();
+
+}
+
+}
+
+
+function prev(){
+
+if(page>0){
+
+page--;
+
+renderHotels();
+
+}
+
+}
+
+
+function exportCSV(){
+
+let csv=
+'Title,Price,Description,Lat,Lng\n'+
+hotels.map(h=>
+`"${h.title}",${h.price},"${h.desc}",${h.lat},${h.lng}`
+).join('\n');
+
+let a=document.createElement('a');
+
+a.href=URL.createObjectURL(
+new Blob([csv],{type:'text/csv'})
+);
+
+a.download='hotels.csv';
+
+a.click();
+
+}
+
+
+renderHotels();
+
+</script>
+
+</body>
+</html>
